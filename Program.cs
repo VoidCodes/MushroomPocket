@@ -21,7 +21,7 @@ namespace MushroomPocket
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
             //Start your assignment 1 requirements below.
-            // Test data
+            // Test data 1
 
             List<Character> characterList = new List<Character>();
 
