@@ -61,8 +61,6 @@ namespace MushroomPocket
                             break;
                         case "3":
                             Console.WriteLine("Enter the character you want to check for transformation");
-                            string characterToCheck = Console.ReadLine();
-                            CheckTransformCharacter(characterToCheck);
                             break;
                         case "4":
                             Console.WriteLine("Enter the character you want to transform");
@@ -90,20 +88,26 @@ namespace MushroomPocket
                 Console.WriteLine("Enter the character Exp");
                 int exp = Convert.ToInt32(Console.ReadLine());
 
+                // Instantiate the character
+                Character character = new Character();
+
                 switch (characterName)
                 {
                     case "Abbas":
-                        Abbas abbas = new Abbas(hp, exp);
-                        characterList.Add(abbas);
+                        character = new Abbas(hp, exp);
+                        characterList.Add(character);
                         break;
                     case "Waluigi":
-                        characterList.Add(new Waluigi(hp, exp));
+                        character = new Waluigi(hp, exp);
+                        characterList.Add(character);
                         break;
                     case "Wario":
-                        characterList.Add(new Wario(hp, exp));
+                        character = new Wario(hp, exp);
+                        characterList.Add(character);
                         break;
                     case "Daisy":
-                        characterList.Add(new Daisy(hp, exp));
+                        character = new Daisy(hp, exp);
+                        characterList.Add(character);
                         break;
                     default:
                         Console.WriteLine("Invalid character name");
@@ -133,9 +137,21 @@ namespace MushroomPocket
                 }   
             }
 
-            void CheckTransformCharacter(string character)
+            void CheckTransformCharacter()
             {
-                Console.WriteLine("checkTransformCharacter");
+                List<Character> characters = characterList;
+
+                foreach (Character character in characters)
+                {
+                    if (character.Exp >= character.ExpToTransform)
+                    {
+                        Console.WriteLine($"{character.CharacterName} can transform to {character.TransformTo}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{character.CharacterName} cannot transform to {character.TransformTo}");
+                    }
+                }
             }
 
             void TransformCharacter(string character)
