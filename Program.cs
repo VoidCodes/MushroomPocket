@@ -20,6 +20,7 @@ namespace MushroomPocket
             };*/
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
+            // Test comment from my Mac
 
             List<Character> characterList = new List<Character>();
 
