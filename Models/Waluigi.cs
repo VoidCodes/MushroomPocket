@@ -8,12 +8,13 @@ namespace MushroomPocket.Models
 {
     internal class Waluigi : Character
     {
-        public Waluigi(string characterName, int hp, int exp, string skill) : base(characterName, hp, exp, skill)
+        public Waluigi(int hp, int exp)
         {
             CharacterName = "Waluigi";
-            Hp = 23;
-            Exp = 11;
+            Hp = hp;
+            Exp = exp;
             Skill = "Agility";
+            TransformTo = "Luigi";
         }
     }
 }
