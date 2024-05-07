@@ -89,18 +89,26 @@ namespace MushroomPocket
                 int hp = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Enter the character Exp");
                 int exp = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Enter the character Skill");
-                string skill = Console.ReadLine();
 
-                // Create a new character object
-                Character character = new Character
+                switch (characterName)
                 {
-                    CharacterName = characterName,
-                    Hp = hp,
-                    Exp = exp,
-                    Skill = skill
-                };
-                characterList.Add(character);
+                    case "Abbas":
+                        Abbas abbas = new Abbas(hp, exp);
+                        characterList.Add(abbas);
+                        break;
+                    case "Waluigi":
+                        characterList.Add(new Waluigi(hp, exp));
+                        break;
+                    case "Wario":
+                        characterList.Add(new Wario(hp, exp));
+                        break;
+                    case "Daisy":
+                        characterList.Add(new Daisy(hp, exp));
+                        break;
+                    default:
+                        Console.WriteLine("Invalid character name");
+                        break;
+                }
                 Console.WriteLine("Character added to the pocket");
             }
 
