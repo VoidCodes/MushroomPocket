@@ -26,13 +26,13 @@ namespace MushroomPocket.Models
         public int ExpToTransform { get; set; }
         public string Skill { get; set; }
         public string TransformTo { get; set; }
+    }
 
-      /*public Character(string characterName, int hp, int exp, string skill)
-        {
-            CharacterName = characterName;
-            Hp = hp;
-            Exp = exp;
-            Skill = skill;
-        }*/
+    public class TransformationCriteria
+    {
+        public int Id { get; set; }
+        public string CharacterName { get; set; }
+        public int ExpToTransform { get; set; }
+        public string TransformTo { get; set; }
     }
 }
