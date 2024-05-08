@@ -60,12 +60,10 @@ namespace MushroomPocket
                             ListCharacters();
                             break;
                         case "3":
-                            Console.WriteLine("Enter the character you want to check for transformation");
+                            CheckTransformCharacter();
                             break;
                         case "4":
-                            Console.WriteLine("Enter the character you want to transform");
-                            string characterToTransform = Console.ReadLine();
-                            TransformCharacter(characterToTransform);
+                            TransformCharacter();
                             break;
                         
                         default:
@@ -80,7 +78,6 @@ namespace MushroomPocket
             void AddMushroomCharacter()
             {
                 // Handle adding mushroom character to the pocket
-                Console.WriteLine("Add Mushroom Character");
                 Console.WriteLine("Enter the character name");
                 string characterName = Console.ReadLine();
                 Console.WriteLine("Enter the character HP");
@@ -113,12 +110,11 @@ namespace MushroomPocket
                         Console.WriteLine("Invalid character name");
                         break;
                 }
-                Console.WriteLine("Character added to the pocket");
+                Console.WriteLine($"{characterName} has been added to the pocket");
             }
 
             void ListCharacters()
             {
-                Console.WriteLine("List Character");
                 // List all characters in the pocket
                 Character[] characters = characterList.ToArray();
                 if (characters.Length == 0)
@@ -139,22 +135,23 @@ namespace MushroomPocket
 
             void CheckTransformCharacter()
             {
-                List<Character> characters = characterList;
+                // Get all characters in the pocket
+                Character[] characters = characterList.ToArray();
 
-                foreach (Character character in characters)
+                if (characters.Length == 0)
                 {
-                    if (character.Exp >= character.ExpToTransform)
+                    Console.WriteLine("No characters in the pocket");
+                }
+                else
+                {
+                    foreach (Character character in characters)
                     {
-                        Console.WriteLine($"{character.CharacterName} can transform to {character.TransformTo}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{character.CharacterName} cannot transform to {character.TransformTo}");
+                        Console.WriteLine($"{character.CharacterName} --> {character.TransformTo}");
                     }
                 }
             }
 
-            void TransformCharacter(string character)
+            void TransformCharacter()
             {
                 Console.WriteLine("Character Transform");
             }
