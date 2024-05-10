@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MushroomPocket.Models
 {
-    /*public class MushroomMaster
+    public class MushroomMaster
     {
         public string Name { get; set; }
         public int NoToTransform { get; set; }
@@ -15,7 +15,7 @@ namespace MushroomPocket.Models
             NoToTransform = noToTransform;
             TransformTo = transformTo;
         }
-    }*/
+    }
 
     public class Character
     {
@@ -26,13 +26,11 @@ namespace MushroomPocket.Models
         public int ExpToTransform { get; set; }
         public string Skill { get; set; }
         public string TransformTo { get; set; }
-    }
 
-    public class TransformationCriteria
-    {
-        public int Id { get; set; }
-        public string CharacterName { get; set; }
-        public int ExpToTransform { get; set; }
-        public string TransformTo { get; set; }
+        public Character(int hp, int exp)
+        {
+            Hp = hp;
+            Exp = exp;
+        }
     }
 }
