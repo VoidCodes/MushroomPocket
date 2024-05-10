@@ -8,7 +8,7 @@ namespace MushroomPocket.Models
 {
     public class Abbas : Character
     {
-        public Abbas(int hp, int exp)
+        public Abbas(int hp, int exp): base(hp, exp)
         {
             CharacterName = "Abbas";
             Hp = hp;
