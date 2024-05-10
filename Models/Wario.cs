@@ -8,13 +8,13 @@ namespace MushroomPocket.Models
 {
     internal class Wario : Character
     {
-        public Wario(int hp, int exp)
+        public Wario(int hp, int exp): base(hp, exp)
         {
             CharacterName = "Wario";
             Hp = hp;
             Exp = exp;
             Skill = "Strength";
-            TransformTo = "Matteo";
+            TransformTo = "Luigi";
         }
     }
 }
