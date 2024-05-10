@@ -13,11 +13,11 @@ namespace MushroomPocket
             /*************************************************************************
                 PLEASE DO NOT CHANGE THE CODES FROM LINE 15-19
             *************************************************************************/ 
-            /*List<MushroomMaster> mushroomMasters = new List<MushroomMaster>(){
+            List<MushroomMaster> mushroomMasters = new List<MushroomMaster>(){
                 new MushroomMaster("Daisy", 2, "Peach"),
                 new MushroomMaster("Wario", 3, "Mario"),
                 new MushroomMaster("Waluigi", 1, "Luigi")
-            };*/
+            };
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
             // Test comment from my Mac
@@ -78,15 +78,15 @@ namespace MushroomPocket
             void AddMushroomCharacter()
             {
                 // Handle adding mushroom character to the pocket
-                Console.WriteLine("Enter the character name");
+                Console.Write("Enter the character name: ");
                 string characterName = Console.ReadLine();
-                Console.WriteLine("Enter the character HP");
+                Console.Write("Enter the character HP: ");
                 int hp = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Enter the character Exp");
+                Console.Write("Enter the character Exp: ");
                 int exp = Convert.ToInt32(Console.ReadLine());
 
                 // Instantiate the character
-                Character character = new Character();
+                Character character = new Character(hp, exp);
 
                 switch (characterName)
                 {
@@ -123,12 +123,14 @@ namespace MushroomPocket
                 }
                 else
                 {
+                    Console.WriteLine("--------------------");
                     foreach (Character character in characters)
                     {
                         Console.WriteLine($"Character Name: {character.CharacterName}");
                         Console.WriteLine($"HP: {character.Hp}");
                         Console.WriteLine($"Exp: {character.Exp}");
                         Console.WriteLine($"Skill: {character.Skill}");
+                        Console.WriteLine("--------------------");
                     }
                 }   
             }
