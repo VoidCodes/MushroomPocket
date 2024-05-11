@@ -20,9 +20,10 @@ namespace MushroomPocket
             };
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
-            // Test comment from my Mac
 
             List<Character> characterList = new List<Character>();
+
+            Dictionary<string, int> transformCriteria = new Dictionary<string, int>();
 
             Console.Title = "Mushroom Pocket";
             while (true)
@@ -72,45 +73,71 @@ namespace MushroomPocket
                     }
                 }
             }
-            
+
 
             // Functions
             void AddMushroomCharacter()
             {
-                // Handle adding mushroom character to the pocket
-                Console.Write("Enter the character name: ");
-                string characterName = Console.ReadLine();
-                Console.Write("Enter the character HP: ");
-                int hp = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Enter the character Exp: ");
-                int exp = Convert.ToInt32(Console.ReadLine());
-
-                // Instantiate the character
-                Character character = new Character(hp, exp);
-
-                switch (characterName)
+                while (true)
                 {
-                    case "Abbas":
-                        character = new Abbas(hp, exp);
-                        characterList.Add(character);
+                    try
+                    {
+                        // Handle adding mushroom character to the pocket
+                        Console.Write("Enter the character name: ");
+                        string characterName = Console.ReadLine();
+                        Console.Write("Enter the character HP: ");
+                        int hp = Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Enter the character Exp: ");
+                        int exp = Convert.ToInt32(Console.ReadLine());
+
+                        // Instantiate the character
+                        Character character = new Character(hp, exp);
+
+                        switch (characterName)
+                        {
+                            /*case "Abbas":
+                                character = new Abbas(hp, exp);
+                                characterList.Add(character);
+                                break;*/
+                            case "Waluigi":
+                                character = new Waluigi(hp, exp);
+                                characterList.Add(character);
+                                break;
+                            case "Wario":
+                                character = new Wario(hp, exp);
+                                characterList.Add(character);
+                                break;
+                            case "Daisy":
+                                character = new Daisy(hp, exp);
+                                characterList.Add(character);
+                                break;
+                            default:
+                                throw new Exception("Invalid character name");
+                        }
+
+                        if (transformCriteria.ContainsKey(characterName))
+                        {
+                            transformCriteria[characterName]++;
+                        }
+                        else
+                        {
+                            transformCriteria.Add(characterName, 1);
+                        }
+
+                        Console.WriteLine($"{characterName} has been added to the pocket");
                         break;
-                    case "Waluigi":
-                        character = new Waluigi(hp, exp);
-                        characterList.Add(character);
-                        break;
-                    case "Wario":
-                        character = new Wario(hp, exp);
-                        characterList.Add(character);
-                        break;
-                    case "Daisy":
-                        character = new Daisy(hp, exp);
-                        characterList.Add(character);
-                        break;
-                    default:
-                        Console.WriteLine("Invalid character name");
-                        break;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Invalid input, please enter a valid input");
+                        //continue;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        //continue;
+                    }
                 }
-                Console.WriteLine($"{characterName} has been added to the pocket");
             }
 
             void ListCharacters()
@@ -142,20 +169,77 @@ namespace MushroomPocket
 
                 if (characters.Length == 0)
                 {
-                    Console.WriteLine("No characters in the pocket");
+                    Console.WriteLine("No characters in the pocket to transform");
                 }
                 else
                 {
-                    foreach (Character character in characters)
+                    foreach (MushroomMaster master in mushroomMasters)
                     {
-                        Console.WriteLine($"{character.CharacterName} --> {character.TransformTo}");
+                        if (transformCriteria.ContainsKey(master.Name) &&
+                            transformCriteria[master.Name] >= master.NoToTransform)
+                        {
+                            Console.WriteLine($"{master.Name} --> {master.TransformTo}");
+                        }
+                        // TODO: Fix bug where the message is displayed multiple times
+                        else
+                        {
+                            Console.WriteLine("No characters can be transformed, please add more characters");
+                        }
                     }
                 }
             }
 
             void TransformCharacter()
             {
-                Console.WriteLine("Character Transform");
+                // Get all characters in the pocket
+                Character[] characters = characterList.ToArray();
+                if (characters.Length == 0)
+                {
+                    Console.WriteLine("No characters in the pocket to transform");
+                }
+                else
+                {
+                    foreach (MushroomMaster master in mushroomMasters)
+                    {
+                        if (transformCriteria.ContainsKey(master.Name) &&  transformCriteria[master.Name] >= master.NoToTransform)
+                        {
+                            // Transform the character
+                            foreach (Character character in characters)
+                            {
+                                if (character.CharacterName == master.Name)
+                                {
+                                    character.CharacterName = master.TransformTo;
+                                    character.Hp = 100;
+                                    character.Exp = 0;
+
+                                    // Assign a unique skill based on the transformed character
+                                    switch (master.TransformTo)
+                                    {
+                                        case "Peach":
+                                            character.Skill = "Magic Abilities";
+                                            break;
+                                        case "Mario":
+                                            character.Skill = "Combat Skills";
+                                            break;
+                                        case "Luigi":
+                                            character.Skill = "Precision and Accuracy";
+                                            break;
+                                        // Add more cases for other transformed characters and their skills
+                                        default:
+                                            character.Skill = "Transformed"; // Default skill
+                                            break;
+                                    }
+
+                                    Console.WriteLine($"{master.Name} has been transformed to {master.TransformTo}");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No characters can be transformed, please add more characters");
+                        }
+                    }
+                }   
             }
         }
     }
