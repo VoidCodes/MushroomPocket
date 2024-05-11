@@ -14,7 +14,7 @@ namespace MushroomPocket.Models
             Hp = hp;
             Exp = exp;
             Skill = "Strength";
-            TransformTo = "Luigi";
+            TransformTo = "Mario";
         }
     }
 }
