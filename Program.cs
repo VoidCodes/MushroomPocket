@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using MushroomPocket.Context;
 using MushroomPocket.Models;
 
 namespace MushroomPocket
@@ -110,14 +111,17 @@ namespace MushroomPocket
                             case "Waluigi":
                                 character = new Waluigi(hp, exp);
                                 characterList.Add(character);
+                                //character.Skill = "Agility";
                                 break;
                             case "Wario":
                                 character = new Wario(hp, exp);
                                 characterList.Add(character);
+                                //character.Skill = "Strength";
                                 break;
                             case "Daisy":
                                 character = new Daisy(hp, exp);
                                 characterList.Add(character);
+                                //character.Skill = "Leadership";
                                 break;
                             default:
                                 throw new Exception("Invalid character name");
@@ -130,6 +134,12 @@ namespace MushroomPocket
                         else
                         {
                             transformCriteria.Add(characterName, 1);
+                        }
+
+                        using (var context = new Dbcontext())
+                        {
+                            context.Character.Add(character);
+                            context.SaveChanges();
                         }
 
                         Console.WriteLine($"{characterName} has been added to the pocket");
