@@ -83,7 +83,6 @@ namespace MushroomPocket
                 }
             }
 
-
             // Functions
             void AddMushroomCharacter()
             {
@@ -213,31 +212,36 @@ namespace MushroomPocket
 
             void CheckTransformCharacter()
             {
-                // Get all characters in the pocket
-                Character[] characters = characterList.ToArray();
-
-                if (characters.Length == 0)
+                using (var context = new Dbcontext())
                 {
-                    Console.WriteLine("No characters in the pocket to transform");
-                    Console.WriteLine("\n");
-                }
-                else
-                {
-                    // Flag to check if any character can be transformed
-                    bool canTransform = false;
+                    // Get all characters in the pocket
+                    Character[] characters = context.Character.ToArray();
 
-                    foreach (MushroomMaster master in mushroomMasters)
+                    if (characters.Length == 0)
                     {
-                        if (transformCriteria.ContainsKey(master.Name) &&
-                            transformCriteria[master.Name] >= master.NoToTransform)
-                        {
-                            Console.WriteLine($"{master.Name} --> {master.TransformTo}");
-                            canTransform = true;
-                        }
+                        Console.WriteLine("No characters in the pocket to transform");
+                        Console.WriteLine("\n");
                     }
-                    if (!canTransform)
+                    else
                     {
-                        Console.WriteLine("No characters can be transformed, please add more characters");
+                        // Flag to check if any character can be transformed
+                        bool canTransform = false;
+
+                        foreach (MushroomMaster master in mushroomMasters)
+                        {
+                            // Count the number of characters that can be transformed
+                            int numCharacters = context.Character.Count(c => c.CharacterName == master.Name);
+
+                            if (numCharacters >= master.NoToTransform)
+                            {
+                                Console.WriteLine($"{master.Name} --> {master.TransformTo}");
+                                canTransform = true;
+                            }
+                        }
+                        if (!canTransform)
+                        {
+                            Console.WriteLine("No characters can be transformed, please add more characters");
+                        }
                     }
                 }
             }
