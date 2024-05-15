@@ -10,7 +10,7 @@ using MushroomPocket.Context;
 namespace MushroomPocket.Migrations
 {
     [DbContext(typeof(Dbcontext))]
-    [Migration("20240515010257_InitialCreate")]
+    [Migration("20240515062720_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
