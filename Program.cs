@@ -160,49 +160,54 @@ namespace MushroomPocket
 
             void ListCharacters()
             {
-                // Check if there are any characters in the pocket
-                if (characterList.Count == 0)
+                using (var context = new Dbcontext())
                 {
-                    Console.WriteLine("No characters in the pocket");
-                    Console.WriteLine("\n");
-                    return;
-                }
-
-                Console.WriteLine("--------------------");
-
-                var characterSort = characterList.OrderByDescending(c => c.Hp);
-
-                // Show transformed characters first
-                foreach (MushroomMaster master in mushroomMasters)
-                {
-                    if (transformCriteria.ContainsKey(master.TransformTo) && transformCriteria[master.TransformTo] > 0)
+                    // Get all characters in the pocket from the database
+                    var characterListNew = context.Character.ToList();
+                    // Check if there are any characters in the pocket
+                    if (characterListNew.Count == 0)
                     {
-                        // Find the transformed character in the list (you might have multiple)
-                        foreach (Character character in characterSort.Where(c => c.CharacterName == master.TransformTo))
+                        Console.WriteLine("No characters in the pocket");
+                        Console.WriteLine("\n");
+                        return;
+                    }
+
+                    Console.WriteLine("--------------------");
+
+                    var characterSort = characterListNew.OrderByDescending(c => c.Hp);
+
+                    // Show transformed characters first
+                    foreach (MushroomMaster master in mushroomMasters)
+                    {
+                        if (transformCriteria.ContainsKey(master.TransformTo) && transformCriteria[master.TransformTo] > 0)
                         {
-                            Console.WriteLine($"Character Name: {character.CharacterName}");
-                            Console.WriteLine($"HP: {character.Hp}");
-                            Console.WriteLine($"Exp: {character.Exp}");
-                            Console.WriteLine($"Skill: {character.Skill}");
-                            Console.WriteLine("--------------------");
+                            // Find the transformed character in the list (you might have multiple)
+                            foreach (Character character in characterSort.Where(c => c.CharacterName == master.TransformTo))
+                            {
+                                Console.WriteLine($"Character Name: {character.CharacterName}");
+                                Console.WriteLine($"HP: {character.Hp}");
+                                Console.WriteLine($"Exp: {character.Exp}");
+                                Console.WriteLine($"Skill: {character.Skill}");
+                                Console.WriteLine("--------------------");
+                            }
                         }
                     }
-                }
 
-                // Show non-transformed characters
-                foreach (Character character in characterSort)
-                {
-                    // Skip transformed characters (they are already displayed)
-                    if (mushroomMasters.Any(m => m.TransformTo == character.CharacterName))
+                    // Show non-transformed characters
+                    foreach (Character character in characterSort)
                     {
-                        continue;
-                    }
+                        // Skip transformed characters (they are already displayed)
+                        if (mushroomMasters.Any(m => m.TransformTo == character.CharacterName))
+                        {
+                            continue;
+                        }
 
-                    Console.WriteLine($"Character Name: {character.CharacterName}");
-                    Console.WriteLine($"HP: {character.Hp}");
-                    Console.WriteLine($"Exp: {character.Exp}");
-                    Console.WriteLine($"Skill: {character.Skill}");
-                    Console.WriteLine("--------------------");
+                        Console.WriteLine($"Character Name: {character.CharacterName}");
+                        Console.WriteLine($"HP: {character.Hp}");
+                        Console.WriteLine($"Exp: {character.Exp}");
+                        Console.WriteLine($"Skill: {character.Skill}");
+                        Console.WriteLine("--------------------");
+                    }
                 }
             }
 
