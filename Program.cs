@@ -20,7 +20,7 @@ namespace MushroomPocket
                 new MushroomMaster("Daisy", 2, "Peach"),
                 new MushroomMaster("Wario", 3, "Mario"),
                 new MushroomMaster("Waluigi", 1, "Luigi"),
-                //new MushroomMaster("Abbas", 4, "Shawarma Man")
+                new MushroomMaster("Abbas", 4, "Shawarma Man")
             };
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
@@ -76,7 +76,7 @@ namespace MushroomPocket
                             TransformCharacter();
                             break;
                         case "5":
-                            //UpdateCharacter();
+                            UpdateCharacter();
                             break;
                         
                         default:
@@ -106,10 +106,10 @@ namespace MushroomPocket
 
                         switch (characterName)
                         {
-                            /*case "Abbas":
+                            case "Abbas":
                                 character = new Abbas(hp, exp);
-                                characterList.Add(character);
-                                break;*/
+                                //characterList.Add(character);
+                                break;
                             case "Waluigi":
                                 character = new Waluigi(hp, exp);
                                 //characterList.Add(character);
@@ -309,10 +309,71 @@ namespace MushroomPocket
             }
 
             // Update character
-            /*void UpdateCharacter() 
+            void UpdateCharacter() 
             {
-                Console.WriteLine("Update character");
-            }*/
+                while (true) 
+                {
+                    try 
+                    {
+                        using (var context = new Dbcontext()) 
+                        {
+                            Console.Write("Enter the character name to update: ");
+                            string characterName = Console.ReadLine();
+                        
+                            Character characterToUpdate = context.Character.FirstOrDefault(c => c.CharacterName == characterName);
+                            if (characterToUpdate == null) 
+                            {
+                                Console.WriteLine("Character not found");
+                                break;
+                            }
+
+                            Console.WriteLine("What do you want to update?");
+                            Console.WriteLine("1. HP");
+                            Console.WriteLine("2. EXP");
+                            Console.WriteLine("3. Both"); 
+
+                            Console.Write("Enter your choice: ");
+
+                            string choice = Console.ReadLine();
+
+                            switch (choice) 
+                            {
+                                case "1":
+                                    Console.Write("Enter the new HP: ");
+                                    characterToUpdate.Hp = Convert.ToInt32(Console.ReadLine());
+                                    break;
+                                case "2":
+                                    Console.Write("Enter the new EXP: ");
+                                    characterToUpdate.Exp = Convert.ToInt32(Console.ReadLine());
+                                    break;
+                                case "3":
+                                    Console.Write("Enter the new HP: ");
+                                    characterToUpdate.Hp = Convert.ToInt32(Console.ReadLine());
+                                    Console.Write("Enter the new EXP: ");
+                                    characterToUpdate.Exp = Convert.ToInt32(Console.ReadLine());
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid choice, please enter a valid choice");
+                                    return;
+                            }
+
+                            // Save changes to the database
+                            context.SaveChanges();
+
+                            Console.WriteLine($"{characterName}'s stats have been updated");
+                            break;
+                        }
+                    } 
+                    catch (FormatException) 
+                    {
+                        Console.WriteLine("Invalid input, please enter a valid input");
+                    } 
+                    catch (Exception ex) 
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
         }
     }
 }
