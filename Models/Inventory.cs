@@ -11,15 +11,19 @@ namespace MushroomPocket.Models
     {
         [Key]
         public int Id { get; set; }
+        // Foreign key
         public int CharacterId { get; set; }
         public int ItemId { get; set; }
         public int Quantity { get; set; }
 
-        /*public Inventory(int _characterId, int _itemId, int _quantity)
+        // Navigation properties
+        public Character Character { get; set; }
+        public Items Items { get; set; }
+        public Inventory(int characterId, int itemId, int quantity)
         {
-            CharacterId = _characterId;
-            ItemId = _itemId;
-            Quantity = _quantity;
-        }*/
+            CharacterId = characterId;
+            ItemId = itemId;
+            Quantity = quantity;
+        }
     }
 }

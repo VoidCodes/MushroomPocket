@@ -14,13 +14,11 @@ namespace MushroomPocket.Models
         public int Id { get; set; }
         public string ItemName { get; set; }
         public ItemEffect Effect { get; set; }
-        public int Quantity { get; set; }
 
-        public Items(string itemName, ItemEffect effect, int quantity)
+        public Items(string itemName, ItemEffect effect)
         {
             ItemName = itemName;
             Effect = effect;
-            Quantity = quantity;
         }
     }
 }
