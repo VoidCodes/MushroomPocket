@@ -17,7 +17,6 @@ namespace MushroomPocket.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=MushroomPocket;Trusted_Connection=True;");
             optionsBuilder.UseSqlite(@"Data Source=MushroomPocket.db;");
         }
     }
