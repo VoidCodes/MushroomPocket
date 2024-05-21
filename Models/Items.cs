@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MushroomPocket.Models
@@ -16,6 +17,9 @@ namespace MushroomPocket.Models
         public string Description { get; set; }
         public ItemEffectType EffectType { get; set; }
         public int EffectValue { get; set; }
+
+        // Navigation properties
+        public List<Inventory> Inventory { get; set; }
 
         /*public Items(string itemName, ItemEffect effect)
         {
