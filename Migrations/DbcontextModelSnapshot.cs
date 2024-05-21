@@ -105,12 +105,17 @@ namespace MushroomPocket.Migrations
                         .IsRequired();
 
                     b.HasOne("MushroomPocket.Models.Items", "Items")
-                        .WithMany()
+                        .WithMany("Inventory")
                         .HasForeignKey("ItemsId");
 
                     b.Navigation("Character");
 
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("MushroomPocket.Models.Items", b =>
+                {
+                    b.Navigation("Inventory");
                 });
 #pragma warning restore 612, 618
         }
