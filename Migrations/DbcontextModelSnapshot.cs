@@ -79,7 +79,13 @@ namespace MushroomPocket.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Effect")
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EffectType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EffectValue")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ItemName")
