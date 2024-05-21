@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MushroomPocket.Models
 {
-    public enum ItemEffect
+    public enum ItemEffectType
     {
         HPBoost,
         EXPBoost
@@ -13,12 +13,14 @@ namespace MushroomPocket.Models
         [Key]
         public int Id { get; set; }
         public string ItemName { get; set; }
-        public ItemEffect Effect { get; set; }
+        public string Description { get; set; }
+        public ItemEffectType EffectType { get; set; }
+        public int EffectValue { get; set; }
 
-        public Items(string itemName, ItemEffect effect)
+        /*public Items(string itemName, ItemEffect effect)
         {
             ItemName = itemName;
             Effect = effect;
-        }
+        }*/
     }
 }
