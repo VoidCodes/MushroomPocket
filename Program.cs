@@ -4,18 +4,19 @@ using System.Linq;
 using System.Threading;
 using MushroomPocket.Context;
 using MushroomPocket.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MushroomPocket
 {
     class Program
     {
         static void Main(string[] args)
-        {   
+        {
             // Mega Transformation
             //MushroomMaster criteria list for checking character transformation availability.   
             /*************************************************************************
                 PLEASE DO NOT CHANGE THE CODES FROM LINE 15-19
-            *************************************************************************/ 
+            *************************************************************************/
             List<MushroomMaster> mushroomMasters = new List<MushroomMaster>(){
                 new MushroomMaster("Daisy", 2, "Peach"),
                 new MushroomMaster("Wario", 3, "Mario"),
@@ -29,27 +30,31 @@ namespace MushroomPocket
             Dictionary<string, int> transformCriteria = new Dictionary<string, int>();
 
             Console.Title = "Mushroom Pocket";
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("**************************************************");
             Console.WriteLine("Welcome to Mushroom Pocket App");
             Console.WriteLine("**************************************************");
+            Console.ResetColor();
 
             while (true)
             {
-                string[] options = 
-                { 
-                    "Add Mushroom's character to my pocket", 
-                    "List character(s) in my Pocket", 
-                    "Check if I can transform my characters", 
-                    "Transform character(s)" ,
-                    "Update character"
-                };
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("CHARACTER MANAGEMENT:");
+                Console.ResetColor();
+                Console.WriteLine("1. Add Mushroom Character");
+                Console.WriteLine("2. List Characters");
+                Console.WriteLine("3. Check Transformation Eligibility");
+                Console.WriteLine("4. Transform Character");
+                Console.WriteLine("5. Update Character\n");
+                Console.WriteLine("--------------------");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("ITEM MANAGEMENT:");
+                Console.ResetColor();
+                Console.WriteLine("6. Add Item");
+                Console.WriteLine("7. Add Item to Inventory");
+                Console.WriteLine("8. View Character Inventory\n");
 
-                for (int i = 0; i < options.Length; i++)
-                {
-                     Console.WriteLine($"({i + 1}). {options[i]}");
-                }
-
-                Console.Write("Please only enter [1,2,3,4,5] or q to quit: ");
+                Console.Write("Please only enter [1,2,3,4,5,6,7,8] or q to quit: ");
 
                 string option = Console.ReadLine();
                 if (option != null)
@@ -78,7 +83,16 @@ namespace MushroomPocket
                         case "5":
                             UpdateCharacter();
                             break;
-                        
+                        case "6":
+                            AddItem();
+                            break;
+                        case "7":
+                            AddItemToInventory();
+                            break;
+                        case "8":
+                            ViewCharacterInventory();
+                            break;
+
                         default:
                             Console.WriteLine("Invalid option, please enter a valid option");
                             break;
@@ -108,22 +122,15 @@ namespace MushroomPocket
                         {
                             case "Abbas":
                                 character = new Abbas(hp, exp);
-                                //characterList.Add(character);
                                 break;
                             case "Waluigi":
                                 character = new Waluigi(hp, exp);
-                                //characterList.Add(character);
-                                //character.Skill = "Agility";
                                 break;
                             case "Wario":
                                 character = new Wario(hp, exp);
-                                //characterList.Add(character);
-                                //character.Skill = "Strength";
                                 break;
                             case "Daisy":
                                 character = new Daisy(hp, exp);
-                                //characterList.Add(character);
-                                //character.Skill = "Leadership";
                                 break;
                             default:
                                 throw new Exception("Invalid character name");
@@ -146,6 +153,7 @@ namespace MushroomPocket
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"{characterName} has been added to the pocket");
+                        Console.ResetColor();
                         break;
                     }
                     catch (FormatException)
@@ -233,7 +241,9 @@ namespace MushroomPocket
                         }
                         if (!canTransform)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("No characters can be transformed, please add more characters");
+                            Console.ResetColor();
                         }
                     }
                 }
@@ -295,33 +305,37 @@ namespace MushroomPocket
                                 context.Character.Add(newCharacter);
                                 context.SaveChanges();
 
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine($"{master.Name} has been transformed to {master.TransformTo}");
+                                Console.ResetColor();
                                 hasTransformed = true;
                             }
                         }
 
                         if (!hasTransformed)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("No characters can be transformed, please add more characters");
+                            Console.ResetColor();
                         }
-                    }   
+                    }
                 }
             }
 
             // Update character
-            void UpdateCharacter() 
+            void UpdateCharacter()
             {
-                while (true) 
+                while (true)
                 {
-                    try 
+                    try
                     {
-                        using (var context = new Dbcontext()) 
+                        using (var context = new Dbcontext())
                         {
                             Console.Write("Enter the character name to update: ");
                             string characterName = Console.ReadLine();
-                        
+
                             Character characterToUpdate = context.Character.FirstOrDefault(c => c.CharacterName == characterName);
-                            if (characterToUpdate == null) 
+                            if (characterToUpdate == null)
                             {
                                 Console.WriteLine("Character not found");
                                 break;
@@ -330,13 +344,13 @@ namespace MushroomPocket
                             Console.WriteLine("What do you want to update?");
                             Console.WriteLine("1. HP");
                             Console.WriteLine("2. EXP");
-                            Console.WriteLine("3. Both"); 
+                            Console.WriteLine("3. Both");
 
                             Console.Write("Enter your choice: ");
 
                             string choice = Console.ReadLine();
 
-                            switch (choice) 
+                            switch (choice)
                             {
                                 case "1":
                                     Console.Write("Enter the new HP: ");
@@ -360,17 +374,181 @@ namespace MushroomPocket
                             // Save changes to the database
                             context.SaveChanges();
 
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"{characterName}'s stats have been updated");
+                            Console.ResetColor();
                             break;
                         }
-                    } 
-                    catch (FormatException) 
+                    }
+                    catch (FormatException)
                     {
                         Console.WriteLine("Invalid input, please enter a valid input");
-                    } 
-                    catch (Exception ex) 
+                    }
+                    catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            /* Extra Features goes here */
+            void AddItem()
+            {
+                using (var context = new Dbcontext())
+                {
+                    try
+                    {
+                        Console.Write("Enter item name: ");
+                        string name = Console.ReadLine();
+                        Console.Write("Enter item description: ");
+                        string description = Console.ReadLine();
+
+                        // Get effect type from user (you might want to display options)
+                        Console.Write("Enter item effect type (HPBoost, EXPBoost, Special): ");
+                        string effectTypeString = Console.ReadLine();
+                        if (!Enum.TryParse(effectTypeString, out ItemEffectType effectType))
+                        {
+                            throw new Exception("Invalid effect type.");
+                        }
+
+                        Console.Write("Enter effect value: ");
+                        int effectValue = Convert.ToInt32(Console.ReadLine());
+
+                        // Create the new item
+                        Items newItem = new Items
+                        {
+                            ItemName = name,
+                            Description = description,
+                            EffectType = effectType,
+                            EffectValue = effectValue
+                        };
+
+                        // Add the item to the database
+                        context.Items.Add(newItem);
+                        context.SaveChanges();
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"{name} added to the database.");
+                        Console.ResetColor();
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Invalid input. Please enter valid values.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }
+            }
+
+            void AddItemToInventory()
+            {
+                using (var context = new Dbcontext())
+                {
+                    try
+                    {
+                        // 1. Get Character Name
+                        Console.Write("Enter the name of the character: ");
+                        string characterName = Console.ReadLine();
+
+                        // 2. Get Item Name
+                        Console.Write("Enter the name of the item: ");
+                        string itemName = Console.ReadLine();
+
+                        // 3. Find Character and Item in Database
+                        Character character = context.Character.FirstOrDefault(c => c.CharacterName == characterName);
+                        Items item = context.Items.FirstOrDefault(i => i.ItemName == itemName);
+
+                        if (character == null)
+                        {
+                            throw new Exception("Character not found.");
+                        }
+                        if (item == null)
+                        {
+                            throw new Exception("Item not found.");
+                        }
+
+                        // 4. Get Quantity
+                        Console.Write("Enter quantity: ");
+                        int quantity = Convert.ToInt32(Console.ReadLine());
+
+                        // 5. Check Existing Inventory Entry
+                        Inventory existingEntry = context.Inventory.FirstOrDefault(
+                            e => e.CharacterId == character.Id && e.ItemId == item.Id);
+
+                        if (existingEntry != null)
+                        {
+                            // Update quantity if entry exists
+                            existingEntry.Quantity += quantity;
+                        }
+                        else
+                        {
+                            // Create a new inventory entry
+                            /*Inventory newEntry = new Inventory
+                            {
+                                CharacterId = character.Id,
+                                ItemId = item.Id,
+                                Quantity = quantity
+                            };*/
+                            Inventory newEntry = new Inventory(character.Id, item.Id, quantity);
+                            context.Inventory.Add(newEntry);
+                        }
+
+                        // 6. Save Changes
+                        context.SaveChanges();
+
+                        Console.WriteLine($"{quantity} x {itemName} added to {characterName}'s inventory.");
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Invalid input. Please enter valid values.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }
+            }
+
+            void ViewCharacterInventory()
+            {
+                using (var context = new Dbcontext())
+                {
+                    Console.Write("Enter the name of the character: ");
+                    string characterName = Console.ReadLine();
+
+                    // Find the character in the database
+                    Character character = context.Character.FirstOrDefault(c => c.CharacterName == characterName);
+
+                    if (character == null)
+                    {
+                        Console.WriteLine("Character not found.");
+                        return;
+                    }
+
+                    // Retrieve the character's inventory
+                    var inventory = context.Inventory
+                        .Where(i => i.CharacterId == character.Id)
+                        .Include(i => i.Items)
+                        .ToList();
+
+                    if (inventory.Count == 0)
+                    {
+                        Console.WriteLine($"{characterName} has no items in their inventory.");
+                        return;
+                    }
+
+                    Console.WriteLine($"{characterName}'s Inventory:");
+                    Console.WriteLine("--------------------");
+
+                    foreach (var entry in inventory)
+                    {
+                        Console.WriteLine($"Item: {entry.Items.ItemName}");
+                        Console.WriteLine($"Description: {entry.Items.Description}");
+                        Console.WriteLine($"Effect: {entry.Items.EffectType} ({entry.Items.EffectValue})");
+                        Console.WriteLine($"Quantity: {entry.Quantity}");
+                        Console.WriteLine("--------------------");
                     }
                 }
             }
