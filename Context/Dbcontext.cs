@@ -19,5 +19,14 @@ namespace MushroomPocket.Context
         {
             optionsBuilder.UseSqlite(@"Data Source=MushroomPocket.db;");
         }
+
+        // This is the relationship between Inventory and Items
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Inventory>()
+                .HasOne(i => i.Items) // Inventory has one Items
+                .WithMany(i => i.Inventory) // Items has many Inventory
+                .HasForeignKey(i => i.ItemId);
+        }
     }
 }
