@@ -22,8 +22,14 @@ namespace MushroomPocket.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Attack")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CharacterName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Defence")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Exp")
                         .HasColumnType("INTEGER");
