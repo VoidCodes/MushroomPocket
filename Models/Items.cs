@@ -6,7 +6,8 @@ namespace MushroomPocket.Models
     public enum ItemEffectType
     {
         HPBoost,
-        EXPBoost
+        EXPBoost,
+        Special
     }
     
     public class Items
@@ -20,11 +21,5 @@ namespace MushroomPocket.Models
 
         // Navigation properties
         public List<Inventory> Inventory { get; set; }
-
-        /*public Items(string itemName, ItemEffect effect)
-        {
-            ItemName = itemName;
-            Effect = effect;
-        }*/
     }
 }
