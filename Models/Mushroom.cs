@@ -26,6 +26,8 @@ namespace MushroomPocket.Models
         public int ExpToTransform { get; set; }
         public string Skill { get; set; }
         public string TransformTo { get; set; }
+        public int Attack { get; set; }
+        public int Defence { get; set; }
 
         public Character(int hp, int exp)
         {
