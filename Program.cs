@@ -21,7 +21,8 @@ namespace MushroomPocket
                 new MushroomMaster("Daisy", 2, "Peach"),
                 new MushroomMaster("Wario", 3, "Mario"),
                 new MushroomMaster("Waluigi", 1, "Luigi"),
-                new MushroomMaster("Abbas", 4, "Shawarma Man")
+                new MushroomMaster("Abbas", 4, "Shawarma Man"),
+                new MushroomMaster("Primagen", 2, "Protogen"),
             };
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
@@ -45,16 +46,22 @@ namespace MushroomPocket
                 Console.WriteLine("2. List Characters");
                 Console.WriteLine("3. Check Transformation Eligibility");
                 Console.WriteLine("4. Transform Character");
-                Console.WriteLine("5. Update Character\n");
+                Console.WriteLine("5. Update Character");
                 Console.WriteLine("--------------------");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("ITEM MANAGEMENT:");
                 Console.ResetColor();
                 Console.WriteLine("6. Add Item");
                 Console.WriteLine("7. Add Item to Inventory");
-                Console.WriteLine("8. View Character Inventory\n");
+                Console.WriteLine("8. View Character Inventory");
+                Console.WriteLine("9.  Use Item");
+                Console.WriteLine("--------------------");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("BATTLE SYSTEM:");
+                Console.ResetColor();
+                Console.WriteLine("10. Start Battle");
 
-                Console.Write("Please only enter [1,2,3,4,5,6,7,8] or q to quit: ");
+                Console.Write("Please only enter [1,2,3,4,5,6,7,8,9,10] or q to quit: ");
 
                 string option = Console.ReadLine();
                 if (option != null)
@@ -92,6 +99,12 @@ namespace MushroomPocket
                         case "8":
                             ViewCharacterInventory();
                             break;
+                        case "9":
+                            UseItem();
+                            break;
+                        case "10":
+                            StartBattle();
+                            break;
 
                         default:
                             Console.WriteLine("Invalid option, please enter a valid option");
@@ -122,6 +135,9 @@ namespace MushroomPocket
                         {
                             case "Abbas":
                                 character = new Abbas(hp, exp);
+                                break;
+                            case "Primagen":
+                                character = new Primagen(hp, exp);
                                 break;
                             case "Waluigi":
                                 character = new Waluigi(hp, exp);
@@ -187,19 +203,6 @@ namespace MushroomPocket
 
                     var characterSort = characterListNew.OrderByDescending(c => c.Hp);
 
-                    // Show transformed characters first
-                    /*foreach (MushroomMaster master in mushroomMasters)
-                    {
-                        // Find the transformed character in the list (you might have multiple)
-                        foreach (Character character in characterSort.Where(c => c.CharacterName == master.TransformTo))
-                        {
-                            Console.WriteLine($"Character Name: {character.CharacterName}");
-                            Console.WriteLine($"HP: {character.Hp}");
-                            Console.WriteLine($"Exp: {character.Exp}");
-                            Console.WriteLine($"Skill: {character.Skill}");
-                            Console.WriteLine("--------------------");
-                        }
-                    }*/
                     foreach (Character character in characterSort)
                     {
                         Console.WriteLine($"Character Name: {character.CharacterName}");
@@ -296,6 +299,12 @@ namespace MushroomPocket
                                         break;
                                     case "Luigi":
                                         newCharacter.Skill = "Precision and Accuracy";
+                                        break;
+                                    case "Shawarma Man":
+                                        newCharacter.Skill = "NO KETCHUP ON ZA SHAWARMA";
+                                        break;
+                                    case "Protogen":
+                                        newCharacter.Skill = "Advanced Technology";
                                         break;
                                     default:
                                         newCharacter.Skill = "Transformed"; // Default skill
@@ -535,7 +544,9 @@ namespace MushroomPocket
 
                     if (inventory.Count == 0)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"{characterName} has no items in their inventory.");
+                        Console.ResetColor();
                         return;
                     }
 
@@ -551,6 +562,233 @@ namespace MushroomPocket
                         Console.WriteLine("--------------------");
                     }
                 }
+            }
+
+            void UseItem()
+            {
+                using (var context = new Dbcontext())
+                {
+                    Console.Write("Enter the name of the character: ");
+                    string characterName = Console.ReadLine();
+
+                    // Find the character in the database
+                    Character character = context.Character.FirstOrDefault(c => c.CharacterName == characterName);
+
+                    if (character == null)
+                    {
+                        Console.WriteLine("Character not found.");
+                        return;
+                    }
+
+                    // Retrieve the character's inventory
+                    var inventory = context.Inventory
+                        .Where(i => i.CharacterId == character.Id)
+                        .Include(i => i.Items)
+                        .ToList();
+
+                    if (inventory.Count == 0)
+                    {
+                        Console.WriteLine($"{characterName} has no items in their inventory.");
+                        return;
+                    }
+
+                    Console.WriteLine($"{characterName}'s Inventory:");
+                    Console.WriteLine("--------------------");
+
+                    foreach (var entry in inventory)
+                    {
+                        Console.WriteLine($"Item: {entry.Items.ItemName}");
+                        Console.WriteLine($"Description: {entry.Items.Description}");
+                        Console.WriteLine($"Effect: {entry.Items.EffectType} ({entry.Items.EffectValue})");
+                        Console.WriteLine($"Quantity: {entry.Quantity}");
+                        Console.WriteLine("--------------------");
+                    }
+
+                    Console.Write("Enter the name of the item to use: ");
+                    string itemName = Console.ReadLine();
+
+                    Inventory inventoryEntry = inventory.FirstOrDefault(i => i.Items.ItemName == itemName);
+
+                    if (inventoryEntry == null)
+                    {
+                        Console.WriteLine("Item not found in inventory.");
+                        return;
+                    }
+
+                    // Use the item
+                    switch (inventoryEntry.Items.EffectType)
+                    {
+                        case ItemEffectType.HPBoost:
+                            character.Hp += inventoryEntry.Items.EffectValue;
+                            break;
+                        case ItemEffectType.EXPBoost:
+                            character.Exp += inventoryEntry.Items.EffectValue;
+                            break;
+                        case ItemEffectType.Special:
+                            // Implement special effect
+                            break;
+                    }
+
+                    // Decrement quantity
+                    inventoryEntry.Quantity--;
+
+                    // Remove item from inventory if quantity is 0
+                    if (inventoryEntry.Quantity == 0)
+                    {
+                        context.Inventory.Remove(inventoryEntry);
+                    }
+
+                    // Save changes
+                    context.SaveChanges();
+
+                    Console.WriteLine($"{characterName} used {itemName}.");
+                }
+            }
+
+            void StartBattle()
+            {
+                using (var context = new Dbcontext())
+                {
+                    try
+                    {
+                        // Get character name
+                        Console.Write("Enter the name of the first character: ");
+                        string character1Name = Console.ReadLine();
+                        Console.Write("Enter the name of the second character: ");
+                        string character2Name = Console.ReadLine();
+
+                        // Find characters in database
+                        Character character1 = context.Character.FirstOrDefault(c => c.CharacterName == character1Name);
+                        Character character2 = context.Character.FirstOrDefault(c => c.CharacterName == character2Name);
+
+                        if (character1 == null || character2 == null)
+                        {
+                            throw new Exception("Character not found.");
+                        }
+
+                        // Battle logic
+                        // 2. Battle Loop
+                        int round = 1;
+                        Random random = new Random();
+                        while (character1.Hp > 0 && character2.Hp > 0)
+                        {
+                            Console.WriteLine("\n--------------------");
+                            Console.WriteLine($"Round: {round}"); // Track the round number
+                            Console.WriteLine("--------------------");
+
+                            // 2.1. Player 1 Turn
+                            Console.WriteLine($"\n{character1.CharacterName}'s turn (HP: {character1.Hp})");
+                            Console.WriteLine("1. Attack");
+                            Console.WriteLine("2. Use Item");
+                            Console.WriteLine("3. Defend");
+                            Console.Write("Enter your choice: ");
+
+                            string choice = Console.ReadLine();
+                            switch (choice)
+                            {
+                                case "1":
+                                    Attack(character1, character2);
+                                    break;
+                                case "2":
+                                    // Implement Item Usage Logic
+                                    UseItem();
+                                    break;
+                                case "3":
+                                    Defend(character1);
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid choice. Please enter a valid option.");
+                                    break;
+                            }
+
+                            // Check if Character 2 is defeated after Player 1's turn
+                            if (character2.Hp <= 0)
+                            {
+                                break; // Exit the loop if Character 2 is defeated
+                            }
+
+                            // 2.2. Player 2 (AI) Turn
+                            Console.WriteLine($"\n{character2.CharacterName}'s turn (HP: {character2.Hp})");
+
+                            // P2 Turn: Random AI Choice
+                            int aiChoice = random.Next(1, 4); // Choose a random action (1-3)
+
+                            switch (aiChoice)
+                            {
+                                case 1:
+                                    Attack(character2, character1);
+                                    break;
+                                case 2:
+                                    // 1. Check AI Inventory
+                                    var aiInventory = context.Inventory
+                                        .Where(i => i.CharacterId == character2.Id)
+                                        .Include(i => i.Items)
+                                        .ToList();
+
+                                    // 2. Use a random item from AI inventory
+                                    if (aiInventory.Count > 0)
+                                    {
+                                        Inventory aiItem = aiInventory[random.Next(0, aiInventory.Count)];
+                                        Console.WriteLine($"{character2.CharacterName} used {aiItem.Items.ItemName}.");
+                                        UseItem();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"{character2.CharacterName} has no items to use.");
+                                    }
+                                    break;
+                                case 3:
+                                    Defend(character2);
+                                    break;
+                            }
+
+                            // Display Round Results
+                            Console.WriteLine("\n--- Round Results ---");
+                            Console.WriteLine($"{character1.CharacterName} HP: {character1.Hp}");
+                            Console.WriteLine($"{character2.CharacterName} HP: {character2.Hp}");
+
+                            round++; // Increment the round counter
+                        }
+
+                        Console.WriteLine("Battle over!");
+                        Console.WriteLine($"{character1Name} has {character1.Hp} HP left.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }
+            }
+
+            void Attack(Character attacker, Character defender)
+            {
+                Random random = new Random();
+                int damage = attacker.Attack + random.Next(1, 4); // Base damage + random bonus
+
+                // Implement Attack Logic
+                if (attacker.Skill == "Radiant Burst")
+                {
+                    // Radiant Burst skill: Increase damage by 5
+                    damage += 5;
+                    Console.WriteLine($"{attacker.CharacterName} used Radiant Burst and increased damage by 5.");
+                }
+
+                // Reduce defender's HP
+                defender.Hp -= damage;
+                Console.WriteLine($"{attacker.CharacterName} attacked {defender.CharacterName} and dealt {damage} damage.");
+
+                // Check if defender is defeated
+                if (defender.Hp < 0)
+                {
+                    defender.Hp = 0; // Set HP to 0 if negative
+                }
+            }
+
+            void Defend(Character defender)
+            {
+                // Basic defense mechanism: Reduces incoming damage by a small amount
+                defender.Defence += 2; // Increase defense by 2 (you can adjust this value)
+                Console.WriteLine($"{defender.CharacterName} defends, increasing their defense by 2!");
             }
         }
     }
