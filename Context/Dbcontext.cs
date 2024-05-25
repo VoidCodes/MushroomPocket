@@ -10,7 +10,6 @@ namespace MushroomPocket.Context
 {
     public class Dbcontext : DbContext
     {
-        //public DbSet<MushroomMaster> Mushroom { get; set; }
         public DbSet<Character> Character { get; set; }
         public DbSet<Items> Items { get; set; } 
         public DbSet<Inventory> Inventory { get; set; }
