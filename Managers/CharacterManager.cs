@@ -39,6 +39,9 @@ namespace MushroomPocket.Managers
                         case "Protobean":
                             character = new Protobean(hp, exp);
                             break;
+                        case "Protogen":
+                            character = new Protogen(hp, exp);
+                            break;
                         case "Waluigi":
                             character = new Waluigi(hp, exp);
                             break;
