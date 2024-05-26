@@ -22,7 +22,8 @@ namespace MushroomPocket
                 new MushroomMaster("Wario", 3, "Mario"),
                 new MushroomMaster("Waluigi", 1, "Luigi"),
                 new MushroomMaster("Abbas", 3, "Shawarma Man"),
-                new MushroomMaster("Primagen", 2, "Protogen"),
+                new MushroomMaster("Protobean", 2, "Protogen"),
+                new MushroomMaster("Protogen", 3, "Primagen"),
             };
 
             //Use "Environment.Exit(0);" if you want to implement an exit of the console program
@@ -59,7 +60,7 @@ namespace MushroomPocket
                 Console.WriteLine("6. Add Item");
                 Console.WriteLine("7. Add Item to Inventory");
                 Console.WriteLine("8. View Character Inventory");
-                Console.WriteLine("9.  Use Item");
+                Console.WriteLine("9. Use Item");
                 Console.WriteLine("--------------------");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("BATTLE SYSTEM:");
@@ -113,7 +114,9 @@ namespace MushroomPocket
                             break;
 
                         default:
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Invalid option, please enter a valid option");
+                            Console.ResetColor();
                             break;
                     }
                 }
@@ -209,6 +212,9 @@ namespace MushroomPocket
                                         newCharacter.Skill = "BEBSI";
                                         break;
                                     case "Protogen":
+                                        newCharacter.Skill = "Radiant Burst";
+                                        break;
+                                    case "Primagen":
                                         newCharacter.Skill = "Advanced Technology";
                                         break;
                                     default:
