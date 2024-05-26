@@ -23,6 +23,12 @@ namespace MushroomPocket.Managers
                     Console.Write("Enter item description: ");
                     string description = Console.ReadLine();
 
+                    if (name == " " || description == " ")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        throw new Exception("Invalid input. Please enter valid values.");
+                    }
+
                     // Get effect type from user (you might want to display options)
                     Console.Write("Enter item effect type (HPBoost, EXPBoost, Special): ");
                     string effectTypeString = Console.ReadLine();
@@ -135,7 +141,9 @@ namespace MushroomPocket.Managers
 
                 if (character == null)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Character not found.");
+                    Console.ResetColor();
                     return;
                 }
 
@@ -268,10 +276,12 @@ namespace MushroomPocket.Managers
 
                     if (character == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         throw new Exception("Character not found.");
                     }
                     if (item == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         throw new Exception("Item not found.");
                     }
 
