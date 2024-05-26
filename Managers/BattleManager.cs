@@ -24,8 +24,15 @@ namespace MushroomPocket.Managers
                     string character2Name = Console.ReadLine();
 
                     // Find characters in database
-                    Character character1 = context.Character.FirstOrDefault(c => c.CharacterName == character1Name);
-                    Character character2 = context.Character.FirstOrDefault(c => c.CharacterName == character2Name);
+                    Character character1 = context.Character
+                    .Where(c => c.CharacterName == character1Name)
+                    .OrderByDescending(c => c.Hp) // Order by HP in descending order
+                    .FirstOrDefault(); // Select the one with the highest HP
+
+                    Character character2 = context.Character
+                    .Where(c => c.CharacterName == character2Name)
+                    .OrderByDescending(c => c.Hp) // Order by HP in descending order
+                    .FirstOrDefault();
 
                     if (character1 == null || character2 == null)
                     {
