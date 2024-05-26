@@ -29,6 +29,7 @@ namespace MushroomPocket.Managers
 
                     if (character1 == null || character2 == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         throw new Exception("Character not found.");
                     }
 
@@ -172,9 +173,9 @@ namespace MushroomPocket.Managers
             // Implement Attack Logic
             if (attacker.Skill == "Radiant Burst")
             {
-                // Radiant Burst skill: Increase damage by 9
+                // Radiant Burst skill: Increase damage by 7
                 damage += 7;
-                Console.WriteLine($"{attacker.CharacterName} used Radiant Burst and increased damage by 9.");
+                Console.WriteLine($"{attacker.CharacterName} used Radiant Burst and increased damage by 7.");
             }
 
             if (attacker.Skill == "Advanced Technology")
@@ -182,6 +183,13 @@ namespace MushroomPocket.Managers
                 // Advanced Technology skill: Increase damage by 7
                 damage += 7;
                 Console.WriteLine($"{attacker.CharacterName} used Advanced Technology and increased damage by 7.");
+            }
+
+            if (attacker.Skill == "Neon Beam")
+            {
+                // Neon Beam skill: Increase damage by 7
+                damage += 7;
+                Console.WriteLine($"{attacker.CharacterName} used Neon Beam and increased damage by 5.");
             }
 
             // Reduce defender's HP
