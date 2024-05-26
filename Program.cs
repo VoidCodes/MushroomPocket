@@ -213,6 +213,7 @@ namespace MushroomPocket
                                         break;
                                     case "Protogen":
                                         newCharacter.Skill = "Radiant Burst";
+                                        newCharacter.TransformTo = "Primagen";
                                         break;
                                     case "Primagen":
                                         newCharacter.Skill = "Advanced Technology";
