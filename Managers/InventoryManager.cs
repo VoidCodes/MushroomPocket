@@ -23,22 +23,28 @@ namespace MushroomPocket.Managers
                     Console.Write("Enter item description: ");
                     string description = Console.ReadLine();
 
-                    if (name == " " || description == " ")
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        throw new Exception("Invalid input. Please enter valid values.");
-                    }
-
                     // Get effect type from user (you might want to display options)
                     Console.Write("Enter item effect type (HPBoost, EXPBoost, Special): ");
                     string effectTypeString = Console.ReadLine();
                     if (!Enum.TryParse(effectTypeString, out ItemEffectType effectType))
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         throw new Exception("Invalid effect type.");
                     }
 
                     Console.Write("Enter effect value: ");
                     int effectValue = Convert.ToInt32(Console.ReadLine());
+                    if (effectValue < 0 || effectValue > 100)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        throw new Exception("Invalid effect value.");
+                    }
+
+                    if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(description))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        throw new Exception("Name and description cannot be empty.");
+                    }
 
                     // Create the new item
                     Items newItem = new Items
@@ -59,7 +65,9 @@ namespace MushroomPocket.Managers
                 }
                 catch (FormatException)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid input. Please enter valid values.");
+                    Console.ResetColor();
                 }
                 catch (Exception ex)
                 {
@@ -87,10 +95,12 @@ namespace MushroomPocket.Managers
 
                     if (character == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         throw new Exception("Character not found.");
                     }
                     if (item == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         throw new Exception("Item not found.");
                     }
 
@@ -117,11 +127,16 @@ namespace MushroomPocket.Managers
                     // 6. Save Changes
                     context.SaveChanges();
 
+                    // 7. Display Success Message
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"{quantity} x {itemName} added to {characterName}'s inventory.");
+                    Console.ResetColor();
                 }
                 catch (FormatException)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid input. Please enter valid values.");
+                    Console.ResetColor();
                 }
                 catch (Exception ex)
                 {
@@ -235,9 +250,9 @@ namespace MushroomPocket.Managers
                     case ItemEffectType.EXPBoost:
                         character.Exp += inventoryEntry.Items.EffectValue;
                         break;
-                    case ItemEffectType.Special:
+                    /*case ItemEffectType.Special:
                         // Implement special effect
-                        break;
+                        break;*/
                 }
 
                 // Decrement quantity
@@ -304,6 +319,7 @@ namespace MushroomPocket.Managers
                         Character targetCharacter = context.Character.FirstOrDefault(c => c.CharacterName == targetCharacterName);
                         if (targetCharacter == null)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             throw new Exception("Target character not found.");
                         }
 
@@ -312,16 +328,22 @@ namespace MushroomPocket.Managers
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid choice.");
+                        Console.ResetColor();
                     }
                 }
                 catch (FormatException)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid input. Please enter valid values.");
+                    Console.ResetColor();
                 }
                 catch (Exception ex)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Error: {ex.Message}");
+                    Console.ResetColor();
                 }
             }
         }
