@@ -40,34 +40,12 @@ namespace MushroomPocket
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("**************************************************");
             Console.WriteLine("Welcome to Mushroom Pocket App");
-            Console.WriteLine("**************************************************");
+            Console.WriteLine("************************************************** \n");
             Console.ResetColor();
 
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("CHARACTER MANAGEMENT:");
-                Console.ResetColor();
-                Console.WriteLine("1. Add Mushroom Character");
-                Console.WriteLine("2. List Characters");
-                Console.WriteLine("3. Check Transformation Eligibility");
-                Console.WriteLine("4. Transform Character");
-                Console.WriteLine("5. Update Character");
-                Console.WriteLine("--------------------");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("ITEM MANAGEMENT:");
-                Console.ResetColor();
-                Console.WriteLine("6. Add Item");
-                Console.WriteLine("7. Add Item to Inventory");
-                Console.WriteLine("8. View Character Inventory");
-                Console.WriteLine("9. Use Item");
-                Console.WriteLine("--------------------");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("BATTLE SYSTEM:");
-                Console.ResetColor();
-                Console.WriteLine("10. Start Battle");
-
-                Console.Write("Please only enter [1,2,3,4,5,6,7,8,9,10] or q to quit: ");
+                DisplayMenu();
 
                 string option = Console.ReadLine();
                 
@@ -120,6 +98,33 @@ namespace MushroomPocket
                             break;
                     }
                 }
+            }
+
+            void DisplayMenu()
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("CHARACTER MANAGEMENT:");
+                Console.ResetColor();
+                Console.WriteLine("1. Add Mushroom Character");
+                Console.WriteLine("2. List Characters");
+                Console.WriteLine("3. Check Transformation Eligibility");
+                Console.WriteLine("4. Transform Character");
+                Console.WriteLine("5. Update Character");
+                Console.WriteLine("--------------------");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("ITEM MANAGEMENT:");
+                Console.ResetColor();
+                Console.WriteLine("6. Add Item");
+                Console.WriteLine("7. Add Item to Inventory");
+                Console.WriteLine("8. View Character Inventory");
+                Console.WriteLine("9. Use Item");
+                Console.WriteLine("--------------------");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("BATTLE SYSTEM:");
+                Console.ResetColor();
+                Console.WriteLine("10. Start Battle");
+
+                Console.Write("Please only enter [1,2,3,4,5,6,7,8,9,10] or q to quit: ");
             }
 
             void CheckTransformCharacter()
