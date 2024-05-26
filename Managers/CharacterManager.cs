@@ -36,8 +36,8 @@ namespace MushroomPocket.Managers
                         case "Abbas":
                             character = new Abbas(hp, exp);
                             break;
-                        case "Primagen":
-                            character = new Primagen(hp, exp);
+                        case "Protobean":
+                            character = new Protobean(hp, exp);
                             break;
                         case "Waluigi":
                             character = new Waluigi(hp, exp);
@@ -74,7 +74,9 @@ namespace MushroomPocket.Managers
                 }
                 catch (FormatException)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid input, please enter a valid input");
+                    Console.ResetColor();
                     //continue;
                 }
                 catch (Exception ex)
@@ -129,7 +131,9 @@ namespace MushroomPocket.Managers
                         Character characterToUpdate = context.Character.FirstOrDefault(c => c.CharacterName == characterName);
                         if (characterToUpdate == null)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Character not found");
+                            Console.ResetColor();
                             break;
                         }
 
@@ -159,7 +163,9 @@ namespace MushroomPocket.Managers
                                 characterToUpdate.Exp = Convert.ToInt32(Console.ReadLine());
                                 break;
                             default:
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Invalid choice, please enter a valid choice");
+                                Console.ResetColor();
                                 return;
                         }
 
@@ -174,7 +180,9 @@ namespace MushroomPocket.Managers
                 }
                 catch (FormatException)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid input, please enter a valid input");
+                    Console.ResetColor();
                 }
                 catch (Exception ex)
                 {
