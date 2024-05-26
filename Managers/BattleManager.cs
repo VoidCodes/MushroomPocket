@@ -49,29 +49,35 @@ namespace MushroomPocket.Managers
                         Console.WriteLine($"Round: {round}"); // Track the round number
                         Console.WriteLine("--------------------");
 
-                        // 2.1. Player 1 Turn
-                        Console.WriteLine($"\n{character1.CharacterName}'s turn (HP: {character1.Hp})");
-                        Console.WriteLine("1. Attack");
-                        Console.WriteLine("2. Use Item");
-                        Console.WriteLine("3. Defend");
-                        Console.Write("Enter your choice: ");
-
-                        string choice = Console.ReadLine();
-                        switch (choice)
+                        while (true)
                         {
-                            case "1":
-                                Attack(character1, character2);
-                                break;
-                            case "2":
-                                // Implement Item Usage Logic
-                                im.UseItem(character1, null); // Use item on self
-                                break;
-                            case "3":
-                                Defend(character1);
-                                break;
-                            default:
-                                Console.WriteLine("Invalid choice. Please enter a valid option.");
-                                break;
+                            // 2.1. Player 1 Turn
+                            Console.WriteLine($"\n{character1.CharacterName}'s turn (HP: {character1.Hp})");
+                            Console.WriteLine("1. Attack");
+                            Console.WriteLine("2. Use Item");
+                            Console.WriteLine("3. Defend");
+                            Console.Write("Enter your choice: ");
+
+                            string choice = Console.ReadLine();
+                            switch (choice)
+                            {
+                                case "1":
+                                    Attack(character1, character2);
+                                    break;
+                                case "2":
+                                    // Implement Item Usage Logic
+                                    im.UseItem(character1, null); // Use item on self
+                                    break;
+                                case "3":
+                                    Defend(character1);
+                                    break;
+                                default:
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Invalid choice. Please enter a valid option.");
+                                    Console.ResetColor();
+                                    continue;
+                            }
+                            break;
                         }
 
                         // Check if Character 2 is defeated after Player 1's turn
