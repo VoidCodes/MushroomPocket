@@ -143,7 +143,7 @@ namespace MushroomPocket.Managers
                         Console.WriteLine($"{character1.CharacterName} gained 10 EXP.");
 
                         // Item Drop: Random chance to drop an item
-                        if (random.Next(1, 11) <= 3) // 30% chance
+                        if (random.Next(1, 11) <= 5) // 50% chance
                         {
                             Console.WriteLine("Item dropped: Health Potion");
                             // Add Health Potion to the winner's inventory
